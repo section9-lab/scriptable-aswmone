@@ -1,0 +1,37 @@
+
+
+
+
+
+function lunarToGanZhi(year, month, day) {
+  // 计算年份的月份对应的农历月份
+  var lunarMonth = new Date(year, month - 1, 1).getMonth();
+  // 计算年份的日期对应的农历日期
+  var lunarDate = new Date(year, month - 1, day).getDate();
+  // 计算农历月份的天数
+  var lunarDays = lunarMonthDays[lunarMonth];
+  // 计算当前日期在农历月份中的位置
+  var pos = (lunarDate - 1) % lunarDays + 1;
+  // 计算农历日期
+  var lunarNewDate = new Date(year, lunarMonth, pos);
+  // 计算农历年份
+  var lunarYear = lunarNewDate.getFullYear() - 1900;
+  return { year: lunarYear, month: lunarMonth + 1, day: pos };
+}
+
+function lunarDateToString(lunarDate) {
+  var year = lunarDate.year;
+  var month = lunarDate.month;
+  var day = lunarDate.day;
+  var days = lunarMonthDays[month];
+  if (day > days) {
+    day = day - days;
+    month++;
+  }
+  return year + '-' + month + '-' + day;
+}
+
+// 测试
+var date = new Date('2023-08-09');
+var lunarDate = lunarToGanZhi(date.getFullYear(), date.getMonth() + 1, date.getDate());
+console.log(lunarDateToString(lunarDate));
